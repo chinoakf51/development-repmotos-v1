@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MotoECU Pro | Refacciones y Reprogramación de Motos</title>
+  <style>
+    :root{
+      --rojo:#e63946; --negro:#141414; --gris:#f4f4f5; --acento:#ffb703;
+      --texto:#222; --blanco:#fff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
+    body{color:var(--texto);background:var(--gris);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .contenedor{width:min(1150px,92%);margin-inline:auto}
+
+    /* HEADER */
+    header{position:sticky;top:0;z-index:50;background:var(--negro);color:var(--blanco)}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0}
+    .logo{font-size:1.4rem;font-weight:800;letter-spacing:.5px}
+    .logo span{color:var(--rojo)}
+    nav ul{display:flex;gap:1.4rem;list-style:none}
+    nav a{font-weight:600;transition:.2s}
+    nav a:hover{color:var(--acento)}
+    .btn{display:inline-block;padding:.7rem 1.3rem;border-radius:8px;font-weight:700;cursor:pointer;border:none;transition:.25s}
+    .btn-rojo{background:var(--rojo);color:#fff}
+    .btn-rojo:hover{background:#c92a36;transform:translateY(-2px)}
+    .btn-amarillo{background:var(--acento);color:#111}
+    .menu-toggle{display:none;font-size:1.6rem;cursor:pointer;background:none;border:none;color:#fff}
+
+    /* HERO */
+    .hero{min-height:82vh;display:grid;place-items:center;text-align:center;color:#fff;
+      background:linear-gradient(rgba(10,10,10,.8),rgba(10,10,10,.85)),url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1600&q=80') center/cover}
+    .hero h1{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:1rem}
+    .hero h1 span{color:var(--rojo)}
+    .hero p{max-width:640px;margin:0 auto 1.8rem;font-size:1.1rem;color:#ddd}
+    .hero-botones{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+    section{padding:4.5rem 0}
+    .titulo-seccion{text-align:center;font-size:2rem;margin-bottom:.5rem}
+    .subtitulo{text-align:center;color:#666;max-width:620px;margin:0 auto 2.6rem}
+    .linea{width:70px;height:4px;background:var(--rojo);margin:0 auto 2.6rem;border-radius:4px}
+
+    /* SERVICIOS */
+    .grid{display:grid;gap:1.6rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    .card{background:#fff;padding:1.8rem;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);transition:.3s}
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 26px rgba(0,0,0,.12)}
+    .card .icono{font-size:2.2rem;margin-bottom:.8rem}
+    .card h3{margin-bottom:.5rem;color:var(--negro)}
+
+    /* CATÁLOGO */
+    #catalogo{background:#fff}
+    .filtros{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+    .filtro{padding:.5rem 1.1rem;border:2px solid var(--negro);border-radius:30px;background:none;cursor:pointer;font-weight:600}
+    .filtro.activo,.filtro:hover{background:var(--negro);color:#fff}
+    .producto{background:var(--gris);border-radius:14px;overflow:hidden;transition:.3s}
+    .producto:hover{transform:translateY(-6px)}
+    .producto-img{height:170px;background:#dcdcdc center/cover no-repeat;display:grid;place-items:center;font-size:3rem}
+    .producto-info{padding:1.1rem}
+    .precio{color:var(--rojo);font-weight:800;font-size:1.15rem}
+    .marca{font-size:.8rem;color:#777;text-transform:uppercase;letter-spacing:.5px}
+
+    /* REPROGRAMACIÓN */
+    #reprogramacion{background:var(--negro);color:#fff}
+    #reprogramacion .subtitulo{color:#bbb}
+    .pasos{display:grid;gap:1.4rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));counter-reset:paso}
+    .paso{background:#1f1f1f;padding:1.6rem;border-radius:14px;border-left:4px solid var(--rojo)}
+    .paso::before{counter-increment:paso;content:counter(paso);display:grid;place-items:center;width:38px;height:38px;background:var(--rojo);border-radius:50%;font-weight:800;margin-bottom:.8rem}
+
+    /* COTIZADOR */
+    .cotizador{background:#fff;padding:2rem;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.08);max-width:620px;margin-inline:auto}
+    label{font-weight:600;display:block;margin:.9rem 0 .3rem}
+    select,input,textarea{width:100%;padding:.75rem;border:1px solid #ccc;border-radius:8px;font-size:1rem}
+    textarea{min-height:110px;resize:vertical}
+    #resultado{margin-top:1.2rem;padding:1rem;background:var(--gris);border-radius:10px;font-weight:700;display:none}
+
+    /* CONTACTO */
+    #contacto{background:#fff}
+    .contacto-grid{display:grid;gap:2rem;grid-template-columns:1fr 1fr;align-items:start}
+    .dato{display:flex;gap:.8rem;margin-bottom:1rem;align-items:flex-start}
+    .mapa{width:100%;height:260px;border:0;border-radius:14px;filter:grayscale(.3)}
+
+    footer{background:var(--negro);color:#aaa;text-align:center;padding:2rem 0}
+    footer a{color:var(--acento)}
+
+    @media(max-width:820px){
+      nav ul{display:none;position:absolute;top:100%;left:0;right:0;background:var(--negro);flex-direction:column;padding:1rem 0;text-align:center}
+      nav ul.abrir{display:flex}
+      .menu-toggle{display:block}
+      .contacto-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="contenedor nav">
+    <div class="logo">MOTO<span>ECU</span> PRO</div>
+    <button class="menu-toggle" onclick="document.getElementById('menu').classList.toggle('abrir')">☰</button>
+    <nav>
+      <ul id="menu">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#catalogo">Refacciones</a></li>
+        <li><a href="#reprogramacion">Reprogramación</a></li>
+        <li><a href="#cotizador">Cotizador</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="contenedor">
+    <h1>Refacciones y <span>Reprogramación</span> de Motos</h1>
+    <p>Expertos en electrónica automotriz, diagnóstico escáner, chip tuning y venta de refacciones originales y de alta calidad para todas las marcas.</p>
+    <div class="hero-botones">
+      <a href="#catalogo" class="btn btn-rojo">Ver Catálogo</a>
+      <a href="#cotizador" class="btn btn-amarillo">Cotizar Ahora</a>
+    </div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="contenedor">
+    <h2 class="titulo-seccion">Nuestros Servicios</h2>
+    <p class="subtitulo">Tecnología de punta y experiencia comprobada para tu moto.</p>
+    <div class="linea"></div>
+    <div class="grid">
+      <div class="card"><div class="icono">💻</div><h3>Reprogramación de ECU</h3><p>Optimización de mapa de inyección, eliminación de limitadores y mejora de respuesta del acelerador.</p></div>
+      <div class="card"><div class="icono">🔧</div><h3>Diagnóstico con Escáner</h3><p>Lectura y borrado de códigos de falla, revisión de sensores y actuadores con equipos profesionales.</p></div>
+      <div class="card"><div class="icono">⚙️</div><h3>Refacciones Originales</h3><p>Piezas OEM y alternativas certificadas para Honda, Yamaha, Suzuki, KTM, Bajaj, Italika y más.</p></div>
+      <div class="card"><div class="icono">🏍️</div><h3>Chip Tuning / Stage 1</h3><p>Aumento de potencia y torque con mapas personalizados validados en banco de pruebas.</p></div>
+      <div class="card"><div class="icono">🔑</div><h3>Inmobilizador y Llaves</h3><p>Programación de llaves, clonación de transponders y resolución de fallas de sistema antirrobo.</p></div>
+      <div class="card"><div class="icono">📦</div><h3>Envíos a Todo el País</h3><p>Recibe tus refacciones en 24-72 horas con garantía y asesoría técnica incluida.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="catalogo">
+  <div class="contenedor">
+    <h2 class="titulo-seccion">Catálogo de Refacciones</h2>
+    <p class="subtitulo">Filtra por categoría y encuentra la pieza que necesitas.</p>
+    <div class="filtros">
+      <button class="filtro activo" data-cat="todos">Todos</button>
+      <button class="filtro" data-cat="motor">Motor</button>
+      <button class="filtro" data-cat="electronica">Electrónica</button>
+      <button class="filtro" data-cat="frenos">Frenos</button>
+      <button class="filtro" data-cat="electrico">Eléctrico</button>
+    </div>
+    <div class="grid" id="productos"></div>
+  </div>
+</section>
+
+<section id="reprogramacion">
+  <div class="contenedor">
+    <h2 class="titulo-seccion">Proceso de Reprogramación</h2>
+    <p class="subtitulo">Un método seguro y respaldado para optimizar el rendimiento de tu moto.</p>
+    <div class="linea"></div>
+    <div class="pasos">
+      <div class="paso"><h3>Lectura original</h3><p>Respaldo completo del archivo de fábrica de tu ECU antes de cualquier modificación.</p></div>
+      <div class="paso"><h3>Diagnóstico</h3><p>Evaluación de sensores, estado mecánico y modificaciones instaladas (escape, filtro).</p></div>
+      <div class="paso"><h3>Ajuste de mapa</h3><p>Calibración de inyección, encendido y limitadores según tus necesidades reales.</p></div>
+      <div class="paso"><h3>Prueba y entrega</h3><p>Prueba en carretera, verificación sin códigos de falla y garantía por escrito.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cotizador">
+  <div class="contenedor">
+    <h2 class="titulo-seccion">Cotizador Rápido</h2>
+    <p class="subtitulo">Obtén un estimado instantáneo de tu servicio o refacción.</p>
+    <div class="linea"></div>
+    <form class="cotizador" onsubmit="return cotizar(event)">
+      <label for="tipo">Tipo de servicio</label>
+      <select id="tipo">
+        <option value="0">Selecciona...</option>
+        <option value="1200">Reprogramación de ECU - $1,200</option>
+        <option value="800">Diagnóstico con escáner - $800</option>
+        <option value="2500">Chip Tuning Stage 1 - $2,500</option>
+        <option value="600">Programación de llave/inmovilizador - $600</option>
+      </select>
+      <label for="marca">Marca de la moto</label>
+      <select id="marca">
+        <option value="1">Honda / Yamaha / Suzuki</option>
+        <option value="1.15">KTM / BMW / Ducati (+15%)</option>
+        <option value="0.9">Italika / Vento / AKT (-10%)</option>
+      </select>
+      <label for="nombre">Tu nombre</label>
+      <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required>
+      <label for="tel">Teléfono / WhatsApp</label>
+      <input type="tel" id="tel" placeholder="Ej. 55 1234 5678" required>
+      <br><br>
+      <button type="submit" class="btn btn-rojo" style="width:100%">Calcular Estimado</button>
+      <div id="resultado"></div>
+    </form>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="contenedor">
+    <h2 class="titulo-seccion">Contáctanos</h2>
+    <p class="subtitulo">Estamos listos para ayudarte con tu proyecto.</p>
+    <div class="linea"></div>
+    <div class="contacto-grid">
+      <div>
+        <div class="dato">📍 <div><strong>Dirección</strong><br>Av. Taller Mecánico #123, Col. Centro, CDMX</div></div>
+        <div class="dato">📞 <div><strong>Teléfono</strong><br>55 1234 5678</div></div>
+        <div class="dato">💬 <div><strong>WhatsApp</strong><br><a href="https://wa.me/5215512345678">Enviar mensaje directo</a></div></div>
+        <div class="dato">🕒 <div><strong>Horario</strong><br>Lun–Vie 9:00–19:00 · Sáb 9:00–15:00</div></div>
+        <form style="margin-top:1rem" onsubmit="alert('¡Mensaje enviado! Te contactaremos pronto.');return false;">
+          <input type="email" placeholder="Tu correo" required>
+          <textarea placeholder="Cuéntanos qué necesita tu moto..." required></textarea>
+          <br><br>
+          <button class="btn btn-amarillo" type="submit">Enviar Mensaje</button>
+        </
